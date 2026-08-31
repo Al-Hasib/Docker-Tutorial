@@ -1,0 +1,14 @@
+# Kept here ONLY so you can build it side-by-side with the multi-stage
+# Dockerfile and compare image sizes directly. This is the same style of
+# Dockerfile every previous topic has used.
+FROM python:3.12
+
+WORKDIR /app
+
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+COPY . .
+
+EXPOSE 5000
+CMD ["python", "app.py"]

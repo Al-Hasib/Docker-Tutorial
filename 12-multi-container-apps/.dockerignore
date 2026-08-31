@@ -1,0 +1,10 @@
+# Keeps the build context small and prevents host-only junk from ever
+# reaching the image (or accidentally overwriting things via COPY . .)
+__pycache__/
+*.pyc
+.venv/
+venv/
+.git/
+.gitignore
+.env
+*.md

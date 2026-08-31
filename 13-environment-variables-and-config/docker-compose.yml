@@ -1,0 +1,27 @@
+services:
+  api:
+    build: .
+    ports:
+      - "5000:5000"
+    env_file:
+      - .env
+    environment:
+      # Structural (network topology), not a secret — kept out of .env
+      POSTGRES_HOST: db
+      REDIS_HOST: cache
+    depends_on:
+      - db
+      - cache
+
+  db:
+    image: postgres:16
+    env_file:
+      - .env
+    volumes:
+      - notes-db-data:/var/lib/postgresql/data
+
+  cache:
+    image: redis:7-alpine
+
+volumes:
+  notes-db-data:
