@@ -10,12 +10,12 @@
 
 ## Dev vs. prod compose files
 
-| | `docker-compose.yml` (dev, from topic 17) | `docker-compose.prod.yml` (this topic) |
-|---|---|---|
-| Entry point | `api` exposed directly on `localhost:5000` | Only `nginx` exposed, on port 80 — `api` has no `ports:` at all |
-| Restarts | None specified (fine for a demo you start/stop by hand) | `restart: unless-stopped` everywhere |
-| Resource limits | None | `deploy.resources.limits` per service |
-| Reverse proxy | None | Nginx in front of everything |
+|                 | `docker-compose.yml` (dev, from topic 17)             | `docker-compose.prod.yml` (this topic)                              |
+| --------------- | ------------------------------------------------------- | --------------------------------------------------------------------- |
+| Entry point     | `api` exposed directly on `localhost:5000`          | Only`nginx` exposed, on port 80 — `api` has no `ports:` at all |
+| Restarts        | None specified (fine for a demo you start/stop by hand) | `restart: unless-stopped` everywhere                                |
+| Resource limits | None                                                    | `deploy.resources.limits` per service                               |
+| Reverse proxy   | None                                                    | Nginx in front of everything                                          |
 
 Both describe the *same* logical stack (api + db + cache); the production file just adds the
 operational concerns real deployments need.
@@ -49,16 +49,15 @@ Why put anything in front of the app at all?
 
 ## 2. Restart policies
 
-| Policy | Behavior |
-|---|---|
-| `no` (default) | Never restart automatically |
-| `on-failure` | Restart only if the container exits with a non-zero code |
-| `always` | Always restart, even after `docker stop` followed by a daemon restart |
-| `unless-stopped` | Like `always`, but respects an explicit `docker stop` (won't restart until you start it again) |
+| Policy             | Behavior                                                                                          |
+| ------------------ | ------------------------------------------------------------------------------------------------- |
+| `no` (default)   | Never restart automatically                                                                       |
+| `on-failure`     | Restart only if the container exits with a non-zero code                                          |
+| `always`         | Always restart, even after`docker stop` followed by a daemon restart                            |
+| `unless-stopped` | Like`always`, but respects an explicit `docker stop` (won't restart until you start it again) |
 
 `unless-stopped` is used throughout `docker-compose.prod.yml` — it's the standard choice for
-long-running services: they come back after a crash or host reboot, but a deliberate `docker
-compose stop` is still respected.
+long-running services: they come back after a crash or host reboot, but a deliberate `docker compose stop` is still respected.
 
 ## 3. Resource limits
 
